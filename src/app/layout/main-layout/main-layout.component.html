@@ -1,0 +1,11 @@
+<div class="app-container">
+  <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+
+  <app-sidebar [isExpanded]="sidebarExpanded()"></app-sidebar>
+
+  <main class="main-container" [class.sidebar-expanded]="sidebarExpanded()">
+    <div class="contet-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
