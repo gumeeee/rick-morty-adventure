@@ -1,0 +1,56 @@
+<header class="header">
+  <div class="header-container">
+    <div class="header-left">
+      <button
+        class="btn btn-link sidebar-toggle"
+        (click)="onToggleSidebar()"
+        aria-label="Sidebar Toggle"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+
+      <div class="logo">
+        <img
+          src="logo.png"
+          alt="Rick and Morty Adventure"
+          class="logo-img"
+        />
+        <span class="logo-text">Rick & Morty Adventure</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="dropdown" [class.show]="dropdownOpen">
+        <button
+          class="btn btn-link dropdown-toggle user-dropdown"
+          type="button"
+          (click)="toggleDropdown()"
+          aria-expanded="dropdownOpen"
+        >
+          <i class="bi bi-person-circle"> </i>
+          <span class="user-name">{{ userName }}</span>
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end" [class.show]="dropdownOpen">
+          <li>
+            <a class="dropdown-item" (click)="goToProfile()">
+              <i class="bi bi-person"></i> Meu Perfil
+            </a>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item text-danger" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i> Sign Out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div
+  *ngIf="dropdownOpen"
+  class="dropdown-backdrop"
+  (click)="closeDropdown()"
+></div>
