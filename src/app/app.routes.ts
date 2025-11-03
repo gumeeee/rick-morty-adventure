@@ -33,6 +33,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'locations/:id',
+        loadComponent: () =>
+          import(
+            './features/locations/location-details/location-details.component'
+          ).then((m) => m.LocationDetailsComponent),
+      },
+      {
         path: 'episodes',
         loadComponent: () =>
           import('./features/episodes/episodes.component').then(

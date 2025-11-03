@@ -1,0 +1,142 @@
+<div class="location-details-container" *ngIf="!loading() && location()">
+  <button class="btn-back" (click)="goBack()">
+    <i class="bi bi-arrow-left"></i>
+    Voltar
+  </button>
+
+  <div class="location-header">
+    <div class="location-main-info">
+      <div
+        class="location-icon-wrapper"
+        [class]="getTypeClass(location()!.type)"
+      >
+        <i [class]="'bi ' + getTypeIcon(location()!.type)"></i>
+      </div>
+
+      <div class="location-title-section">
+        <h1 class="location-name">{{ location()!.name }}</h1>
+        <div class="location-badges">
+          <span
+            class="badge type-badge"
+            [class]="getTypeClass(location()!.type)"
+          >
+            <i [class]="'bi ' + getTypeIcon(location()!.type)"></i>
+            {{ location()!.type }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="location-info-cards">
+      <div class="info-card">
+        <i class="bi bi-layers-fill"></i>
+        <div class="info-content">
+          <span class="info-label">Tipo</span>
+          <span class="info-value">{{ location()!.type }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <i class="bi bi-box-arrow-in-right"></i>
+        <div class="info-content">
+          <span class="info-label">Dimensão</span>
+          <span class="info-value">{{ location()!.dimension }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <i class="bi bi-people-fill"></i>
+        <div class="info-content">
+          <span class="info-label">Residentes</span>
+          <span class="info-value">{{ totalResidents }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="residents-section" *ngIf="totalResidents > 0">
+    <div class="residents-header">
+      <h2>
+        <i class="bi bi-people-fill"></i>
+        Residentes
+      </h2>
+      <span class="residents-count" *ngIf="residents().length > 0">
+        Mostrando {{ residents().length }} de {{ totalResidents }}
+      </span>
+    </div>
+
+    <div class="residents-loading" *ngIf="loadingResidents()">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p>Carregando residentes...</p>
+    </div>
+
+    <div
+      class="residents-grid"
+      *ngIf="!loadingResidents() && residents().length > 0"
+    >
+      <div
+        class="resident-card"
+        *ngFor="let resident of residents(); let i = index"
+        [routerLink]="['/characters', resident.id]"
+        [style.animation-delay.ms]="i * 50"
+      >
+        <img
+          [src]="resident.image"
+          [alt]="resident.name"
+          class="resident-image"
+        />
+        <div class="resident-info">
+          <h4 class="resident-name">{{ resident.name }}</h4>
+          <span
+            class="resident-status"
+            [class]="getStatusClass(resident.status)"
+          >
+            <i class="bi bi-circle-fill"></i>
+            {{ resident.status }}
+          </span>
+          <p class="resident-species">
+            <i class="bi bi-person-badge"></i>
+            {{ resident.species }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="scroll-sentinel"
+        appInfiniteScroll
+        [enabled]="hasMoreResidents() && !loadingMoreResidents()"
+        (scrolled)="onResidentsScrollEnd()"
+      ></div>
+    </div>
+
+    <div class="loading-more" *ngIf="loadingMoreResidents()">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p>Carregando mais residentes...</p>
+    </div>
+  </div>
+
+  <div class="no-residents" *ngIf="totalResidents === 0">
+    <i class="bi bi-emoji-frown"></i>
+    <p>Esta localização não possui residentes conhecidos.</p>
+  </div>
+</div>
+
+<div class="loading-container" *ngIf="loading()">
+  <div class="spinner-border text-success" role="status">
+    <span class="visually-hidden">Carregando...</span>
+  </div>
+  <p>Carregando detalhes da localização...</p>
+</div>
+
+<div class="error-container" *ngIf="error()">
+  <i class="bi bi-exclamation-triangle"></i>
+  <h2>Oops! Algo deu errado</h2>
+  <p>{{ error() }}</p>
+  <button class="btn btn-primary" (click)="goBack()">
+    Voltar para Localizações
+  </button>
+</div>

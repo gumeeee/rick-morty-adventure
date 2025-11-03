@@ -1,4 +1,4 @@
-<div class="location-card">
+<div class="location-card" [routerLink]="['/locations', location().id]">
   <div class="card-header">
     <div class="location-icon">
       <i [class]="'bi ' + getTypeIcon(location().type)"></i>
@@ -12,13 +12,13 @@
     <div class="card-info">
       <div class="info-item">
         <i class="bi bi-layers"></i>
-        <span class="info-label">Dimension:</span>
+        <span class="info-label">Dimensão:</span>
         <span class="info-value">{{ location().dimension }}</span>
       </div>
 
       <div class="info-item">
         <i class="bi bi-people"></i>
-        <span class="info-label">Residents:</span>
+        <span class="info-label">Residentes:</span>
         <span class="info-value"
           >{{ location().residents.length }} residents</span
         >
@@ -26,7 +26,7 @@
     </div>
 
     <a [routerLink]="['/locations', location().id]" class="btn-details">
-      <span>View Details</span>
+      <span>Ver Detalhes</span>
       <i class="bi bi-arrow-right-circle"></i>
     </a>
   </div>
