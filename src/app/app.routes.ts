@@ -47,6 +47,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'episodes/:id',
+        loadComponent: () =>
+          import(
+            './features/episodes/episode-details/episode-details.component'
+          ).then((m) => m.EpisodeDetailsComponent),
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import('./features/auth/profile/profile.component').then(

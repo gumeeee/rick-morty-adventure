@@ -1,0 +1,233 @@
+$portal-green: #97ce4c;
+$portal-blue: #11b0c8;
+$dark-space: #1a1a2e;
+
+.episode-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 2px solid transparent;
+  animation: fadeInUp 0.5s ease-out backwards;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+    border-color: $portal-green;
+
+    .left-reel,
+    .right-reel {
+      animation: spin 2s linear infinite;
+    }
+
+    .tape-label {
+      transform: translateY(-5px);
+    }
+
+    .btn-watch {
+      background: linear-gradient(135deg, $portal-green 0%, #10b981 100%);
+      transform: translateX(5px);
+
+      i {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+.vhs-tape {
+  padding: 1.5rem;
+}
+
+.tape-label {
+  background: linear-gradient(135deg, $portal-green 0%, #10b981 100%);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  color: white;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.label-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
+.episode-code {
+  font-weight: 800;
+  font-size: 1.125rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.episode-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.3;
+  color: white;
+  min-height: 2.6em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.label-footer {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.season-badge,
+.episode-badge {
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.tape-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tape-reel {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #4a4a4a 30%, #2d2d2d 70%);
+  border: 3px solid #1a1a1a;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 2px;
+    background: #2d2d2d;
+  }
+}
+
+.tape-strip {
+  flex: 1;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #8b4513 10%,
+    #a0522d 50%,
+    #8b4513 90%,
+    transparent 100%
+  );
+  margin: 0 0.75rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.tape-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  i {
+    color: $portal-green;
+    font-size: 1rem;
+  }
+}
+
+.card-footer {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.btn-watch {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  i {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:active {
+    transform: translateX(3px) scale(0.98);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

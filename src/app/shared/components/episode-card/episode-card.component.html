@@ -1,0 +1,46 @@
+<div class="episode-card" [routerLink]="['/episodes', episode().id]">
+  <div class="vhs-tape">
+    <div
+      class="tape-label"
+      [style.background]="getSeasonColor(getSeasonNumber(episode().episode))"
+    >
+      <div class="label-header">
+        <i class="bi bi-tv-fill"></i>
+        <span class="episode-code">{{ episode().episode }}</span>
+      </div>
+      <h3 class="episode-name">{{ episode().name }}</h3>
+      <div class="label-footer">
+        <span class="season-badge">
+          Temporada {{ getSeasonNumber(episode().episode) }}
+        </span>
+        <span class="episode-badge">
+          Episódio {{ getEpisodeNumber(episode().episode) }}
+        </span>
+      </div>
+    </div>
+
+    <div class="tape-body">
+      <div class="tape-reel left-reel"></div>
+      <div class="tape-strip"></div>
+      <div class="tape-reel right-reel"></div>
+    </div>
+
+    <div class="tape-info">
+      <div class="info-item">
+        <i class="bi bi-calendar3"></i>
+        <span>{{ episode().air_date }}</span>
+      </div>
+      <div class="info-item">
+        <i class="bi bi-people-fill"></i>
+        <span>{{ episode().characters.length }} personagens</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <button class="btn-watch">
+      <i class="bi bi-play-circle-fill"></i>
+      Ver Detalhes
+    </button>
+  </div>
+</div>

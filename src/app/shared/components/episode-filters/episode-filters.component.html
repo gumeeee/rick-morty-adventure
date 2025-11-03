@@ -1,0 +1,48 @@
+<div class="filters-container">
+  <div class="filters-header" (click)="toggleExpanded()">
+    <div class="filters-title">
+      <i class="bi bi-funnel-fill"></i>
+      <span>Filtros</span>
+      <span class="badge" *ngIf="hasActiveFilters">{{
+        hasActiveFilters ? "●" : ""
+      }}</span>
+    </div>
+    <button class="btn-toggle" type="button">
+      <i [class]="isExpanded ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+    </button>
+  </div>
+
+  <div class="filters-content" [class.expanded]="isExpanded">
+    <div class="filters-grid">
+      <div class="filter-item">
+        <label for="episode" class="filter-label">
+          <i class="bi bi-tv-fill"></i>
+          Código do Episódio
+        </label>
+        <input
+          type="text"
+          id="episode"
+          class="form-control filter-input"
+          placeholder="e.g., S01E01, S02E03..."
+          [(ngModel)]="filters.episode"
+          (input)="onFilterChange()"
+        />
+        <small class="filter-hint">
+          Digite o código da temporada e episódio (ex: S01E01)
+        </small>
+      </div>
+
+      <div class="filter-item filter-actions">
+        <button
+          class="btn-clear-filters"
+          type="button"
+          (click)="clearFilters()"
+          [disabled]="!hasActiveFilters"
+        >
+          <i class="bi bi-x-circle"></i>
+          Limpar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
