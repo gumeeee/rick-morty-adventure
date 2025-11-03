@@ -34,9 +34,9 @@
 
   <div class="loading-more" *ngIf="loadingMore()">
     <div class="spinner-border text-info" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">Carregando...</span>
     </div>
-    <p>Loading more locations...</p>
+    <p>Carregando mais locais...</p>
   </div>
 
   <div
@@ -44,16 +44,16 @@
     *ngIf="!loading() && locations().length === 0 && !error()"
   >
     <i class="bi bi-map"></i>
-    <h3>No locations found</h3>
-    <p>Try adjusting your search terms</p>
+    <h3>Nenhum local encontrado</h3>
+    <p>Tente ajustar seus termos de pesquisa</p>
   </div>
 
   <div class="error-state" *ngIf="error()">
     <i class="bi bi-exclamation-triangle"></i>
-    <h3>Oops! Something went wrong</h3>
+    <h3>Oops! Algo deu errado</h3>
     <p>{{ error() }}</p>
     <button class="btn btn-primary" (click)="loadLocations(true)">
-      Try Again
+      Tentar Novamente
     </button>
   </div>
 </div>
