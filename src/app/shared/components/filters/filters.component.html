@@ -1,0 +1,94 @@
+<div class="filters-container">
+  <div class="filters-header" (click)="toggleExpanded()">
+    <div class="filters-title">
+      <i class="bi bi-funnel-fill"></i>
+      <span>Filtros</span>
+      <span class="badge" *ngIf="hasActiveFilters">{{
+        hasActiveFilters ? "●" : ""
+      }}</span>
+    </div>
+    <button class="btn-toggle" type="button">
+      <i [class]="isExpanded ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+    </button>
+  </div>
+
+  <div class="filters-content" [class.expanded]="isExpanded">
+    <div class="filters-grid">
+      <div class="filter-item">
+        <label for="status" class="filter-label">
+          <i class="bi bi-heart-pulse"></i>
+          Status
+        </label>
+        <select
+          id="status"
+          class="form-select filter-select"
+          [(ngModel)]="filters.status"
+          (change)="onFilterChange()"
+        >
+          <option *ngFor="let option of statusOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label for="gender" class="filter-label">
+          <i class="bi bi-gender-ambiguous"></i>
+          Gênero
+        </label>
+        <select
+          id="gender"
+          class="form-select filter-select"
+          [(ngModel)]="filters.gender"
+          (change)="onFilterChange()"
+        >
+          <option *ngFor="let option of genderOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label for="species" class="filter-label">
+          <i class="bi bi-person-badge"></i>
+          Espécie
+        </label>
+        <input
+          type="text"
+          id="species"
+          class="form-control filter-input"
+          placeholder="e.g., Human, Alien..."
+          [(ngModel)]="filters.species"
+          (input)="onFilterChange()"
+        />
+      </div>
+
+      <div class="filter-item">
+        <label for="type" class="filter-label">
+          <i class="bi bi-tag"></i>
+          Tipo
+        </label>
+        <input
+          type="text"
+          id="type"
+          class="form-control filter-input"
+          placeholder="e.g., Genetic experiment..."
+          [(ngModel)]="filters.type"
+          (input)="onFilterChange()"
+        />
+      </div>
+
+      <div class="filter-item filter-actions">
+        <button
+          class="btn-clear-filters"
+          type="button"
+          (click)="clearFilters()"
+          [disabled]="!hasActiveFilters"
+        >
+          <i class="bi bi-x-circle"></i>
+          Clear Filters
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

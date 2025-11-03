@@ -12,7 +12,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent {
-  sidebarExpanded = signal<boolean>(true);
+  sidebarExpanded = signal<boolean>(false);
 
   toggleSidebar(): void {
     this.sidebarExpanded.update((value) => !value);
