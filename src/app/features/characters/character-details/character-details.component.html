@@ -1,1 +1,149 @@
-<p>character-details works!</p>
+<div class="loading-container" *ngIf="loading()">
+  <div class="spinner-border text-success" role="status">
+    <span class="visually-hidden">Carregando...</span>
+  </div>
+  <p>Carregando detalhes do personagem...</p>
+</div>
+
+<div class="error-container" *ngIf="error() && !loading()">
+  <i class="bi bi-exclamation-triangle"></i>
+  <h3>{{ error() }}</h3>
+  <button class="btn btn-primary" (click)="goBack()">
+    <i class="bi bi-arrow-left"></i>
+    Voltar para listagem de personagens
+  </button>
+</div>
+
+<div class="character-details" *ngIf="character() && !loading()">
+  <div class="details-header">
+    <button class="btn-back" (click)="goBack()">
+      <i class="bi bi-arrow-left"></i>
+      <span>Voltar para listagem de personagens</span>
+    </button>
+  </div>
+
+  <div class="hero-section">
+    <div class="hero-image-wrapper">
+      <img
+        [src]="character()!.image"
+        [alt]="character()!.name"
+        class="hero-image"
+      />
+
+      <div class="status-badge" [ngClass]="getStatusClass(character()!.status)">
+        <i [class]="'bi ' + getStatusIcon(character()!.status)"></i>
+        <span>{{ character()!.status }}</span>
+      </div>
+    </div>
+
+    <div class="hero-info">
+      <h1 class="character-name">{{ character()!.name }}</h1>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <i class="bi bi-person-badge"></i>
+          <div class="info-content">
+            <span class="info-label">Espécies</span>
+            <span class="info-value">{{ character()!.species }}</span>
+          </div>
+        </div>
+
+        <div class="info-card" *ngIf="character()!.type">
+          <i class="bi bi-tag"></i>
+          <div class="info-content">
+            <span class="info-label">Type</span>
+            <span class="info-value">{{ character()!.type }}</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <i class="bi bi-gender-ambiguous"></i>
+          <div class="info-content">
+            <span class="info-label">Gênero</span>
+            <span class="info-value">{{ character()!.gender }}</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <i class="bi bi-globe"></i>
+          <div class="info-content">
+            <span class="info-label">Origem</span>
+            <span class="info-value">{{ character()!.origin.name }}</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <i class="bi bi-geo-alt"></i>
+          <div class="info-content">
+            <span class="info-label">Última Localização Conhecida</span>
+            <span class="info-value">{{ character()!.location.name }}</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <i class="bi bi-play-circle"></i>
+          <div class="info-content">
+            <span class="info-label">Episódios</span>
+            <span class="info-value"
+              >{{ character()!.episode.length }} episódios</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="episodes-section" *ngIf="character()">
+    <div class="section-header">
+      <h2 class="section-title">
+        <i class="bi bi-play-circle-fill"></i>
+        Episódios em Destaque
+      </h2>
+      <span class="episode-count">
+        Mostrando {{ episodes().length }} de {{ totalEpisodes }}
+      </span>
+    </div>
+
+    <div class="episodes-loading" *ngIf="loadingEpisodes()">
+      <div class="spinner-border spinner-border-sm text-success"></div>
+      <span>Carregando episódios...</span>
+    </div>
+
+    <div class="episodes-container" *ngIf="!loadingEpisodes()">
+      <div class="episodes-grid">
+        <a
+          [routerLink]="['/episodes', episode.id]"
+          class="episode-card"
+          *ngFor="let episode of episodes()"
+        >
+          <div class="episode-code">{{ episode.episode }}</div>
+          <div class="episode-info">
+            <h3 class="episode-name">{{ episode.name }}</h3>
+            <p class="episode-date">{{ episode.air_date }}</p>
+          </div>
+          <i class="bi bi-arrow-right-circle episode-arrow"></i>
+        </a>
+
+        <div
+          class="scroll-sentinel"
+          appInfiniteScroll
+          [enabled]="hasMoreEpisodes() && !loadingMoreEpisodes()"
+          (scrolled)="onEpisodesScrollEnd()"
+        ></div>
+      </div>
+
+      <div class="loading-more-episodes" *ngIf="loadingMoreEpisodes()">
+        <div class="spinner-border spinner-border-sm text-success"></div>
+        <span>Carregando episódios...</span>
+      </div>
+
+      <div
+        class="all-episodes-loaded"
+        *ngIf="!hasMoreEpisodes() && episodes().length > 0"
+      >
+        <i class="bi bi-check-circle-fill"></i>
+        <span>Todos os episódios carregados!</span>
+      </div>
+    </div>
+  </div>
+</div>
