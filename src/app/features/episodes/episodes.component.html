@@ -1,1 +1,59 @@
-<p>episodes works!</p>
+<div class="episodes-page">
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="bi bi-tv-fill"></i>
+      Episódios
+    </h1>
+    <p class="page-subtitle">
+      Assista todas as aventuras interdimensionais de Rick e Morty
+    </p>
+  </div>
+
+  <app-search-bar (searchChange)="onSearch($event)"></app-search-bar>
+
+  <app-episode-filters
+    (filtersChange)="onFiltersChange($event)"
+  ></app-episode-filters>
+
+  <app-loading-skeleton *ngIf="loading()"></app-loading-skeleton>
+
+  <div class="episodes-grid" *ngIf="!loading() && episodes().length > 0">
+    <app-episode-card
+      *ngFor="let episode of episodes(); let i = index"
+      [episode]="episode"
+      [style.animation-delay.ms]="i * 50"
+    ></app-episode-card>
+
+    <div
+      class="scroll-sentinel"
+      appInfiniteScroll
+      [enabled]="hasMore() && !loadingMore()"
+      (scrolled)="onScrollEnd()"
+    ></div>
+  </div>
+
+  <div class="loading-more" *ngIf="loadingMore()">
+    <div class="spinner-border text-success" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p>Carregando mais episódios...</p>
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="!loading() && episodes().length === 0 && !error()"
+  >
+    <i class="bi bi-exclamation-triangle"></i>
+    <h3>Nenhum episódio encontrado</h3>
+    <p>Tente ajustar os filtros ou a busca.</p>
+  </div>
+
+  <div class="error-state" *ngIf="error()">
+    <i class="bi bi-exclamation-circle"></i>
+    <h3>Oops! Algo deu errado</h3>
+    <p>{{ error() }}</p>
+    <button class="btn btn-primary" (click)="loadEpisodes(true)">
+      Tentar Novamente
+    </button>
+  </div>
+</div>
