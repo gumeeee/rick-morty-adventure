@@ -1,1 +1,59 @@
-<p>locations works!</p>
+<div class="locations-page">
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="bi bi-geo-alt-fill"></i>
+      Locais
+    </h1>
+    <p class="page-subtitle">
+      Explore todas as dimensões e locais do multiverso de Rick e Morty.
+    </p>
+  </div>
+
+  <app-search-bar (searchChange)="onSearch($event)"></app-search-bar>
+
+  <app-location-filters
+    (filtersChange)="onFiltersChange($event)"
+  ></app-location-filters>
+
+  <app-loading-skeleton *ngIf="loading()" [count]="6"></app-loading-skeleton>
+
+  <div class="locations-grid" *ngIf="!loading() && locations().length > 0">
+    <app-location-card
+      *ngFor="let location of locations()"
+      [location]="location"
+    >
+    </app-location-card>
+
+    <div
+      class="scroll-sentinel"
+      appInfiniteScroll
+      [enabled]="hasMore() && !loadingMore()"
+      (scrolled)="onScrollEnd()"
+    ></div>
+  </div>
+
+  <div class="loading-more" *ngIf="loadingMore()">
+    <div class="spinner-border text-info" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading more locations...</p>
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="!loading() && locations().length === 0 && !error()"
+  >
+    <i class="bi bi-map"></i>
+    <h3>No locations found</h3>
+    <p>Try adjusting your search terms</p>
+  </div>
+
+  <div class="error-state" *ngIf="error()">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h3>Oops! Something went wrong</h3>
+    <p>{{ error() }}</p>
+    <button class="btn btn-primary" (click)="loadLocations(true)">
+      Try Again
+    </button>
+  </div>
+</div>

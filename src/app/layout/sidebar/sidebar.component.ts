@@ -21,9 +21,9 @@ export class SidebarComponent {
   sidebarToggle = output<void>();
 
   navItems: NavItem[] = [
-    { label: 'Characters', route: '/characters', icon: 'bi-people-fill' },
-    { label: 'Locations', route: '/locations', icon: 'bi-geo-alt-fill' },
-    { label: 'Episodes', route: '/episodes', icon: 'bi-play-circle-fill' },
+    { label: 'Personagens', route: '/characters', icon: 'bi-people-fill' },
+    { label: 'Locais', route: '/locations', icon: 'bi-geo-alt-fill' },
+    { label: 'Episódios', route: '/episodes', icon: 'bi-play-circle-fill' },
   ];
 
   closeSidebar(): void {
