@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ApiResponse, Character, Episode } from '../models';
+import { ApiResponse, Character, Episode, Location } from '../models';
 
 export interface CharacterFilters {
   page?: number;
