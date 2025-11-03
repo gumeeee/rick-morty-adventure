@@ -1,0 +1,50 @@
+<div class="character-card">
+  <div class="card-image-wrapper">
+    <img
+      src="{{ character().image }}"
+      alt="{{ character().name }}"
+      class="card-image"
+      loading="lazy"
+    />
+
+    <div class="status-badge" [ngClass]="getStatusClass(character().status)">
+      <i [class]="'bi ' + getStatusIcon(character().status)"></i>
+      <span>{{ character().status }}</span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <h3 class="card-title">{{ character().name }}</h3>
+
+    <div class="card-info">
+      <div class="info-item">
+        <i class="bi bi-person-badge"></i>
+        <span class="info-label">Especie:</span>
+        <span class="info-value">{{ character().species }}</span>
+      </div>
+
+      <div class="info-item" *ngIf="character().type">
+        <i class="bi bi-tag"></i>
+        <span class="info-label">Tipo:</span>
+        <span class="info-value">{{ character().type }}</span>
+      </div>
+
+      <div class="info-item">
+        <i class="bi bi-gender-ambiguous"></i>
+        <span class="info-label">Gênero:</span>
+        <span class="info-value">{{ character().gender }}</span>
+      </div>
+
+      <div class="info-item">
+        <i class="bi bi-geo-alt"></i>
+        <span class="info-label">Location:</span>
+        <span class="info-value truncate">{{ character().location.name }}</span>
+      </div>
+    </div>
+
+    <a [routerLink]="['/characters', character().id]" class="btn-details">
+      <span>Ver detalhes</span>
+      <i class="bi bi-arrow-right-circle"></i>
+    </a>
+  </div>
+</div>

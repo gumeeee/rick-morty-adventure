@@ -26,6 +26,36 @@ $border-glow: rgba(151, 206, 76, 0.3);
   z-index: 1020;
   overflow: hidden;
 
+  @media (max-width: 767px) {
+    transform: translate(-100%);
+    width: 280px;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.sidebar-expanded {
+      transform: translatex(0);
+
+      .nav-item {
+        animation: slideInLeft 0.4s ease-out forwards;
+        opacity: 0;
+
+        @for $i from 1 through 10 {
+          &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.05}s;
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    transform: translateX(0);
+
+    &.sidebar-expanded {
+      width: 260px;
+    }
+  }
+
   &.sidebar-expanded {
     width: 260px;
 
@@ -67,6 +97,31 @@ $border-glow: rgba(151, 206, 76, 0.3);
 
 .sidebar-nav {
   padding: 1.5rem 0;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba($dark-space, 0.9) 0%,
+    rgba($space-purple, 0.8) 100%
+  );
+  backdrop-filter: blur(4px);
+  z-index: 1010;
+  animation: fadeIn 0.3s ease-in-out;
+  display: none;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    display: none !important;
+  }
 }
 
 .nav-list {
@@ -198,4 +253,25 @@ $border-glow: rgba(151, 206, 76, 0.3);
   opacity: 0;
   transform: translateX(-10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

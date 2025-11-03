@@ -22,23 +22,28 @@ $content-bg: #f5f5f5;
   padding: 0;
   background: $content-bg;
 
-  @media (min-width: 768px) {
+  &.sidebar-expanded {
     margin-left: 260px;
+  }
 
-    &.sidebar-expanded {
-      margin-left: 260px;
-    }
+  @media (max-width: 768px) {
+    margin-left: 0 !important;
   }
 }
 
 .content-wrapper {
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   animation: fadeInUp 0.4s ease-out;
 
   @media (max-width: 768px) {
     padding: 1rem;
+  }
+
+  @media (min-width: 1600px) {
+    padding: 2rem 4rem;
   }
 }
 

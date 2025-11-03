@@ -1,0 +1,134 @@
+$portal-green: #97ce4c;
+$portal-blue: #11b0c8;
+$dark-space: #1a1a2e;
+
+.characters-page {
+  min-height: calc(100vh - 60px);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: $dark-space;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  i {
+    color: $portal-green;
+    filter: drop-shadow(0 0 8px rgba(151, 206, 76, 0.4));
+  }
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(280px, 1fr)
+  ); // IGUAL AO SKELETON
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  position: relative;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scroll-sentinel {
+  position: absolute;
+  bottom: 400px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+}
+
+.loading-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  color: $portal-green;
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3rem;
+  }
+
+  p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+}
+
+.empty-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 400px;
+
+  i {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: $dark-space;
+  }
+
+  p {
+    font-size: 1.125rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  button {
+    margin-top: 1.5rem;
+  }
+}
+
+.empty-state i {
+  color: #9ca3af;
+}
+
+.error-state i {
+  color: #ef4444;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
