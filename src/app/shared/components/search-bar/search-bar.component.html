@@ -1,19 +1,38 @@
-<div class="search-bar">
+<div class="search-container">
   <div class="search-input-wrapper">
     <i class="bi bi-search search-icon"></i>
     <input
       type="text"
-      class="form-control search-input"
-      placeholder="Procure personagens, lugares, episodios..."
-      [(ngModel)]="searchTerm"
-      (input)="onSearchChange($any($event.target).value)"
-      aria-label="Search"
+      class="search-input"
+      placeholder="Buscar personagens, locais, episódios..."
+      [value]="searchTerm()"
+      (input)="onSearchInput($event)"
+      (keydown)="onKeyDown($event)"
     />
     <button
-      *ngIf="searchTerm"
+      *ngIf="searchTerm() && !manualMode()"
       class="btn-clear"
+      type="button"
       (click)="clearSearch()"
-      aria-label="Clear search"
+    >
+      <i class="bi bi-x-circle-fill"></i>
+    </button>
+
+    <button
+      *ngIf="manualMode() && searchTerm()"
+      class="btn-search-submit"
+      type="button"
+      (click)="onSearchSubmit()"
+    >
+      <i class="bi bi-search"></i>
+      Buscar
+    </button>
+
+    <button
+      *ngIf="manualMode() && searchTerm()"
+      class="btn-clear-manual"
+      type="button"
+      (click)="clearSearch()"
     >
       <i class="bi bi-x-circle-fill"></i>
     </button>

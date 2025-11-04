@@ -1,14 +1,12 @@
 $portal-green: #97ce4c;
 $portal-blue: #11b0c8;
 $rick-blue: #44b9c8;
-$morty-yellow: #f0e14a;
-$space-purple: #5a1e76;
 $dark-space: #1a1a2e;
-$text-light: #e8f7f0;
 
-.search-bar {
+.search-container {
   width: 100%;
   margin-bottom: 2rem;
+  animation: slideInDown 0.4s ease-out;
 }
 
 .search-input-wrapper {
@@ -71,12 +69,15 @@ $text-light: #e8f7f0;
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  padding: 0;
+  padding: 0.5rem;
   cursor: pointer;
   color: rgba(0, 0, 0, 0.4);
   font-size: 1.25rem;
   transition: all 0.2s ease;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: #e63946;
@@ -92,8 +93,78 @@ $text-light: #e8f7f0;
   }
 }
 
-.search-bar {
-  animation: slideInDown 0.4s ease-out;
+.btn-search-submit {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.625rem 1rem;
+  background: linear-gradient(135deg, $portal-green 0%, #10b981 100%);
+  color: white;
+  border: none;
+  border-radius: 1.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba($portal-green, 0.3);
+  z-index: 2;
+  white-space: nowrap;
+
+  i {
+    font-size: 1rem;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 12px rgba($portal-green, 0.4);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.98);
+  }
+}
+
+.btn-clear-manual {
+  position: absolute;
+  right: 7.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(239, 68, 68, 0.1);
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #ef4444;
+  font-size: 1.125rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  i {
+    display: block;
+  }
+}
+
+.search-input-wrapper:has(.btn-search-submit) .search-input {
+  padding-right: 10rem;
 }
 
 @keyframes slideInDown {

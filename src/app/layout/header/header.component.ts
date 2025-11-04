@@ -6,11 +6,13 @@ import {
   AVAILABLE_ROLES,
   User,
 } from '../../core/services/auth.service';
+import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
+import { RickMortyApiService } from '../../core/services';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SearchBarComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -18,6 +20,7 @@ export class HeaderComponent {
   toggleSidebar = output<void>();
 
   dropdownOpen = false;
+  searchModalOpen = false;
 
   currentUser!: WritableSignal<User | null>;
   isAuthenticated!: WritableSignal<boolean>;
@@ -28,7 +31,11 @@ export class HeaderComponent {
     return AVAILABLE_ROLES.find((r) => r.value === user.role);
   });
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private apiService: RickMortyApiService
+  ) {
     this.currentUser = this.authService.currentUser;
     this.isAuthenticated = this.authService.isAuthenticated;
   }
@@ -53,5 +60,16 @@ export class HeaderComponent {
 
   closeDropdown(): void {
     this.dropdownOpen = false;
+  }
+
+  toggleSearchModal(): void {
+    this.searchModalOpen = !this.searchModalOpen;
+  }
+
+  onSearch(term: string): void {
+    this.apiService.setSearchTerm(term);
+    if (this.searchModalOpen) {
+      this.searchModalOpen = false;
+    }
   }
 }

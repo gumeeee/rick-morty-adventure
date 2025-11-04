@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
-import { filter, Subject, takeUntil } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  Subject,
+  takeUntil
+} from 'rxjs';
 import { Character } from '../../core/models';
 import { RickMortyApiService } from '../../core/services';
 import { CharacterCardComponent } from '../../shared/components/character-card/character-card.component';
@@ -17,7 +22,6 @@ import { InfiniteScrollDirective } from '../../shared/directives/infinite-scroll
   standalone: true,
   imports: [
     CommonModule,
-    SearchBarComponent,
     CharacterCardComponent,
     LoadingSkeletonComponent,
     FiltersComponent,
@@ -44,6 +48,15 @@ export class CharactersComponent implements OnInit, OnDestroy {
   constructor(private apiService: RickMortyApiService) {}
 
   ngOnInit(): void {
+    this.searchTerm = this.apiService.getSearchTerm();
+
+    this.apiService.searchTerm$
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((term) => {
+        this.searchTerm = term;
+        this.loadCharacters(true);
+      });
+
     this.loadCharacters();
   }
 
@@ -94,11 +107,6 @@ export class CharactersComponent implements OnInit, OnDestroy {
           this.hasMore.set(false);
         },
       });
-  }
-
-  onSearch(term: string): void {
-    this.searchTerm = term;
-    this.loadCharacters(true);
   }
 
   onScrollEnd(): void {

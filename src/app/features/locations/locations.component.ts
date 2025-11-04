@@ -1,23 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { Location as LocationModel } from '../../core/models';
 import { RickMortyApiService } from '../../core/services';
 import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
 import { LocationCardComponent } from '../../shared/components/location-card/location-card.component';
-import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
-import { InfiniteScrollDirective } from '../../shared/directives/infinite-scroll.directive';
-import { Location as LocationModel } from '../../core/models';
 import {
   LocationFiltersComponent,
   LocationFilterValues,
 } from '../../shared/components/location-filters/location-filters.component';
+import { InfiniteScrollDirective } from '../../shared/directives/infinite-scroll.directive';
 
 @Component({
   selector: 'app-locations',
   standalone: true,
   imports: [
     CommonModule,
-    SearchBarComponent,
     LocationCardComponent,
     LoadingSkeletonComponent,
     LocationFiltersComponent,
@@ -43,6 +41,15 @@ export class LocationsComponent {
   constructor(private apiService: RickMortyApiService) {}
 
   ngOnInit(): void {
+    this.searchTerm = this.apiService.getSearchTerm();
+
+    this.apiService.searchTerm$
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((term) => {
+        this.searchTerm = term;
+        this.loadLocations(true);
+      });
+
     this.loadLocations();
   }
 
@@ -93,10 +100,10 @@ export class LocationsComponent {
       });
   }
 
-  onSearch(term: string): void {
-    this.searchTerm = term;
-    this.loadLocations(true);
-  }
+  // onSearch(term: string): void {
+  //   this.searchTerm = term;
+  //   this.loadLocations(true);
+  // }
 
   onFiltersChange(filters: LocationFilterValues): void {
     this.activeFilters = filters;

@@ -9,10 +9,26 @@
         <i class="bi bi-list"></i>
       </button>
 
+      <button
+        class="btn btn-link search-toggle-mobile"
+        (click)="toggleSearchModal()"
+        aria-label="Search"
+        *ngIf="isAuthenticated()"
+      >
+        <i class="bi bi-search"></i>
+      </button>
+
       <div class="logo">
         <img src="logo.png" alt="Rick and Morty Adventure" class="logo-img" />
         <span class="logo-text">Rick & Morty Adventure</span>
       </div>
+    </div>
+
+    <div class="header-search" *ngIf="isAuthenticated()">
+      <app-search-bar
+        [manualMode]="false"
+        (searchChange)="onSearch($event)"
+      ></app-search-bar>
     </div>
 
     <div class="header-right">
@@ -66,6 +82,30 @@
     </div>
   </div>
 </header>
+
+<div
+  class="search-overlay"
+  [class.active]="searchModalOpen"
+  *ngIf="isAuthenticated()"
+>
+  <div class="search-overlay-header">
+    <button class="btn-close-search" (click)="toggleSearchModal()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <h3>Buscar</h3>
+  </div>
+  <div class="search-overlay-content">
+    <app-search-bar
+      [manualMode]="true"
+      (searchChange)="onSearch($event)"
+    ></app-search-bar>
+
+    <p class="search-hint">
+      <i class="bi bi-lightbulb"></i>
+      Digite e clique em "Buscar" ou pressione Enter
+    </p>
+  </div>
+</div>
 
 <div
   *ngIf="dropdownOpen"

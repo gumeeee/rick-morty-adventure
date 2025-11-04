@@ -9,8 +9,6 @@
     </p>
   </div>
 
-  <app-search-bar (searchChange)="onSearch($event)"></app-search-bar>
-
   <app-filters (filtersChange)="onFiltersChange($event)"></app-filters>
 
   <app-loading-skeleton *ngIf="loading()"></app-loading-skeleton>
