@@ -1,27 +1,99 @@
-# RickMortyAdventure
+  # 🚀 Rick and Morty Dashboard
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+  Dashboard interativo para explorar o universo de Rick and Morty, desenvolvido como
+  teste técnico.
 
-## Development server
+  [![CI Pipeline](https://github.com/gumeeee/rick-morty-adventure/workflows/CI%20Pipeline/badge.svg)](https://github.com/gumeeee/rick-morty-adventure/actions)
+  [![Angular](https://img.shields.io/badge/Angular-18-red)](https://angular.io/)
+  [![Docker](https://img.shields.io/badge/Docker-ready-blue)](https://www.docker.com/)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+  **[🌐 Demo ao Vivo](https://main.d2yzbtm6ubfozo.amplifyapp.com/)**
 
-## Code scaffolding
+  ---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+  ## 📋 Features
 
-## Build
+  - ✅ Autenticação com JWT fake (login/registro/perfil)
+  - ✅ Listagem de personagens, localizações e episódios
+  - ✅ Páginas de detalhes com lazy loading
+  - ✅ Filtros avançados e busca persistente
+  - ✅ Integração com TMDB API (ratings dos episódios)
+  - ✅ Design temático Rick and Morty com animações
+  - ✅ Responsivo (mobile e desktop)
+  - ✅ CI/CD com GitHub Actions + AWS Amplify
+  - ✅ Docker support (dev e prod)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+  ---
 
-## Running unit tests
+  ## 🛠 Tech Stack
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  **Frontend:** Angular 18 (Standalone Components), TypeScript, SCSS, Bootstrap 5
 
-## Running end-to-end tests
+  **State Management:** RxJS + Signals
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+  **APIs:** [Rick and Morty API](https://rickandmortyapi.com/) + [TMDB 
+  API](https://www.themoviedb.org/)
 
-## Further help
+  **DevOps:** GitHub Actions, AWS Amplify, Docker
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+  ---
+
+  ## 🚀 Como Rodar
+
+  ### 1️⃣ Localmente (requer Node.js 20+)
+
+  ```bash
+  # Clone e instale
+  git clone https://github.com/gumeeee/rick-morty-adventure.git
+  cd rick-morty-adventure
+  npm install
+
+  # Rode o projeto
+  npm start
+
+  # Acesse http://localhost:4200
+
+  ---
+  2️⃣ Docker - Desenvolvimento (com hot reload)
+
+  # Clone
+  git clone https://github.com/gumeeee/rick-morty-adventure.git
+  cd rick-morty-adventure
+
+  # Configure TMDB API Key (opcional)
+  cp .env.example .env
+  # Edite .env e adicione sua key
+
+  # Rode
+  docker-compose -f docker-compose.dev.yml up
+
+  # Acesse http://localhost:4200
+
+  ---
+  3️⃣ Docker - Produção (build otimizado)
+
+  # Clone
+  git clone https://github.com/gumeeee/rick-morty-adventure.git
+  cd rick-morty-adventure
+
+  # Configure TMDB API Key (opcional)
+  cp .env.example .env
+  # Edite .env e adicione sua key
+
+  # Build e rode
+  docker-compose up --build
+
+  # Acesse http://localhost:4200
+
+  ---
+  🔑 TMDB API Key (Opcional)
+
+  Para exibir ratings dos episódios, você precisa de uma TMDB API Key:
+
+  1. Crie conta em https://www.themoviedb.org/
+  2. Vá em Settings → API → Solicite API Key
+  3. Configure:
+    - Local: edite src/environments/environment.ts
+    - Docker: edite arquivo .env
+
+  ⚠️ O app funciona sem a key, mas não mostra ratings.
