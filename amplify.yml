@@ -1,16 +1,27 @@
-version 1
+version: 1
 frontend:
   phases:
     preBuild:
       commands:
         - npm ci
+        - |
+          cat > src/environments/environment.prod.ts << EOF
+          export const environment = {
+            production: true,
+            apiUrl: 'https://rickandmortyapi.com/api',
+            tmdbApiKey: '${TMDB_API_KEY}',
+            tmdbBaseUrl: 'https://api.themoviedb.org/3',
+            tmdbImageBaseUrl: 'https://image.tmdb.org/t/p/w500',
+          };
+          EOF
+
     build:
       commands:
         - npm run build -- --configuration production
   artifacts:
-    baseDirectory: dist/browser
+    baseDirectory: dist/rick-morty-adventure/browser
     files:
-      - '**/*'
+      - "**/*"
   cache:
     paths:
       - node_modules/**/*
