@@ -1,0 +1,224 @@
+<div class="episode-details-container" *ngIf="!loading() && episode()">
+  <button class="btn-back" (click)="goBack()">
+    <i class="bi bi-arrow-left"></i>
+    Voltar
+  </button>
+
+  <div class="episode-header">
+    <div
+      class="vhs-display"
+      [style.background]="getSeasonColor(getSeasonNumber(episode()!.episode))"
+    >
+      <div class="vhs-screen">
+        <div class="screen-content">
+          <i class="bi bi-tv-fill"></i>
+          <h1 class="episode-code">{{ episode()!.episode }}</h1>
+          <div class="static-lines"></div>
+        </div>
+      </div>
+
+      <div class="vhs-controls">
+        <div class="control-btn">
+          <i class="bi bi-play-fill"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="episode-info-section">
+      <h1 class="episode-title">{{ episode()!.name }}</h1>
+
+      <div class="episode-badges">
+        <span
+          class="badge season-badge"
+          [style.background]="
+            getSeasonColor(getSeasonNumber(episode()!.episode))
+          "
+        >
+          <i class="bi bi-collection-fill"></i>
+          Season {{ getSeasonNumber(episode()!.episode) }}
+        </span>
+        <span class="badge episode-badge">
+          <i class="bi bi-film"></i>
+          Episode {{ getEpisodeNumber(episode()!.episode) }}
+        </span>
+      </div>
+
+      <div class="episode-meta">
+        <div class="meta-item">
+          <i class="bi bi-calendar3"></i>
+          <div>
+            <span class="meta-label">Data de Exibição</span>
+            <span class="meta-value">{{ episode()!.air_date }}</span>
+          </div>
+        </div>
+        <div class="meta-item">
+          <i class="bi bi-people-fill"></i>
+          <div>
+            <span class="meta-label">Personagens</span>
+            <span class="meta-value">{{ totalCharacters }}</span>
+          </div>
+        </div>
+        <div class="meta-item">
+          <i class="bi bi-tv-fill"></i>
+          <div>
+            <span class="meta-label">Código</span>
+            <span class="meta-value">{{ episode()!.episode }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (episode() && !loading()) {
+  <div class="tmdb-rating-section">
+    @if (tmdbLoading()) {
+    <div class="tmdb-card tmdb-loading">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-text"></div>
+      <div class="skeleton skeleton-bar"></div>
+    </div>
+    } @else if (tmdbData()) {
+    <div class="tmdb-card" [style.--rating-color]="getRatingColor()">
+      <div class="tmdb-header">
+        <i class="bi bi-star-fill tmdb-icon"></i>
+        <h3 class="tmdb-title">TMDB Rating</h3>
+      </div>
+
+      <div class="tmdb-rating-display">
+        <div class="rating-score">
+          <span class="rating-number">{{
+            tmdbData()!.vote_average.toFixed(1)
+          }}</span>
+          <span class="rating-max">/10</span>
+        </div>
+        <div class="rating-label">{{ getRatingLabel() }}</div>
+      </div>
+
+      <div class="rating-bar-container">
+        <div class="rating-bar-bg">
+          <div
+            class="rating-bar-fill"
+            [style.width.%]="getRatingPercentage()"
+          ></div>
+        </div>
+        <span class="rating-percentage"
+          >{{ getRatingPercentage().toFixed(0) }}%</span
+        >
+      </div>
+
+      <div class="vote-count">
+        <i class="bi bi-people-fill me-2"></i>
+        {{ formatVoteCount(tmdbData()!.vote_count) }} votes
+      </div>
+
+      @if (tmdbData()!.overview) {
+      <div class="tmdb-overview">
+        <h4 class="overview-title">Overview</h4>
+        <p class="overview-text">{{ tmdbData()!.overview }}</p>
+      </div>
+      } @if (tmdbData()!.runtime) {
+      <div class="tmdb-runtime">
+        <i class="bi bi-clock-fill me-2"></i>
+        Runtime: {{ tmdbData()!.runtime }} min
+      </div>
+      }
+
+      <div class="tmdb-footer">
+        <span class="tmdb-source">Data from The Movie Database</span>
+      </div>
+    </div>
+    } @else if (tmdbError()) {
+    <div class="tmdb-card tmdb-error">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <p>Unable to load rating data</p>
+    </div>
+    }
+  </div>
+  }
+
+  <div class="characters-section" *ngIf="totalCharacters > 0">
+    <div class="characters-header">
+      <h2>
+        <i class="bi bi-people-fill"></i>
+        Personagens do Episódio
+      </h2>
+      <span class="characters-count" *ngIf="characters().length > 0">
+        Mostrando {{ characters().length }} de {{ totalCharacters }}
+      </span>
+    </div>
+
+    <div class="characters-loading" *ngIf="loadingCharacters()">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p>Carregando personagens...</p>
+    </div>
+
+    <div
+      class="characters-grid"
+      *ngIf="!loadingCharacters() && characters().length > 0"
+    >
+      <div
+        class="character-card"
+        *ngFor="let character of characters(); let i = index"
+        [routerLink]="['/characters', character.id]"
+        [style.animation-delay.ms]="i * 50"
+      >
+        <img
+          [src]="character.image"
+          [alt]="character.name"
+          class="character-image"
+        />
+        <div class="character-info">
+          <h4 class="character-name">{{ character.name }}</h4>
+          <span
+            class="character-status"
+            [class]="getStatusClass(character.status)"
+          >
+            <i class="bi bi-circle-fill"></i>
+            {{ character.status }}
+          </span>
+          <p class="character-species">
+            <i class="bi bi-person-badge"></i>
+            {{ character.species }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="scroll-sentinel"
+        appInfiniteScroll
+        [enabled]="hasMoreCharacters() && !loadingMoreCharacters()"
+        (scrolled)="onCharactersScrollEnd()"
+      ></div>
+    </div>
+
+    <div class="loading-more" *ngIf="loadingMoreCharacters()">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p>Carregando mais personagens...</p>
+    </div>
+  </div>
+
+  <div class="no-characters" *ngIf="totalCharacters === 0">
+    <i class="bi bi-emoji-frown"></i>
+    <p>Este episódio não possui personagens conhecidos.</p>
+  </div>
+</div>
+
+<div class="loading-container" *ngIf="loading()">
+  <div class="spinner-border text-success" role="status">
+    <span class="visually-hidden">Carregando...</span>
+  </div>
+  <p>Carregando detalhes do episódio...</p>
+</div>
+
+<div class="error-container" *ngIf="error()">
+  <i class="bi bi-exclamation-triangle"></i>
+  <h2>Oops! Algo deu errado</h2>
+  <p>{{ error() }}</p>
+  <button class="btn btn-primary" (click)="goBack()">
+    Voltar para Episódios
+  </button>
+</div>

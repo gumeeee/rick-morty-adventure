@@ -1,0 +1,60 @@
+<div class="filters-container">
+  <div class="filters-header" (click)="toggleExpanded()">
+    <div class="filters-title">
+      <i class="bi bi-funnel-fill"></i>
+      <span>Filtros</span>
+      <span class="badge" *ngIf="hasActiveFilters">{{
+        hasActiveFilters ? "●" : ""
+      }}</span>
+    </div>
+    <button class="btn-toggle" type="button">
+      <i [class]="isExpanded ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+    </button>
+  </div>
+
+  <div class="filters-content" [class.expanded]="isExpanded">
+    <div class="filters-grid">
+      <div class="filter-item">
+        <label for="type" class="filter-label">
+          <i class="bi bi-layers-fill"></i>
+          Tipo
+        </label>
+        <input
+          type="text"
+          id="type"
+          class="form-control filter-input"
+          placeholder="e.g., Planet, Space station..."
+          [(ngModel)]="filters.type"
+          (input)="onFilterChange()"
+        />
+      </div>
+
+      <div class="filter-item">
+        <label for="dimension" class="filter-label">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Dimensão
+        </label>
+        <input
+          type="text"
+          id="dimension"
+          class="form-control filter-input"
+          placeholder="e.g., Dimension C-137..."
+          [(ngModel)]="filters.dimension"
+          (input)="onFilterChange()"
+        />
+      </div>
+
+      <div class="filter-item filter-actions">
+        <button
+          class="btn-clear-filters"
+          type="button"
+          (click)="clearFilters()"
+          [disabled]="!hasActiveFilters"
+        >
+          <i class="bi bi-x-circle"></i>
+          Limpar Filtros
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

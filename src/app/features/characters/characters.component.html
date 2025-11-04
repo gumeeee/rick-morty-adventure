@@ -1,0 +1,51 @@
+<div class="characters-page">
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="bi bi-people-fill"></i>
+      Personagens
+    </h1>
+    <p class="page-subtitle">
+      Explore o multiverso de Rick e Morty com todos os personagens
+    </p>
+  </div>
+
+  <app-filters (filtersChange)="onFiltersChange($event)"></app-filters>
+
+  <app-loading-skeleton *ngIf="loading()"></app-loading-skeleton>
+
+  <div class="characters-grid" *ngIf="!loading() && characters().length > 0">
+    <app-character-card
+      *ngFor="let character of characters()"
+      [character]="character"
+    ></app-character-card>
+
+    <div
+      class="scroll-sentinel"
+      appInfiniteScroll
+      [enabled]="hasMore() && !loadingMore()"
+      (scrolled)="onScrollEnd()"
+    ></div>
+  </div>
+
+  <div class="loading-more" *ngIf="loadingMore()">
+    <div class="spinner-border text-success" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p>Carregando mais personagens...</p>
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="!loading() && characters().length === 0 && !error()"
+  >
+    <i class="bi bi-exclamation-triangle"></i>
+    <h3>
+      Oops parece que não foi possível buscar personagens... Rick irá encontrar
+      uma solução!
+    </h3>
+    <p>{{ error() }}</p>
+    <button class="btn btn-primary" (click)="loadCharacters(true)">
+      Tentar Novamente
+    </button>
+  </div>
+</div>

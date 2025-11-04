@@ -1,0 +1,33 @@
+<div class="location-card" [routerLink]="['/locations', location().id]">
+  <div class="card-header">
+    <div class="location-icon">
+      <i [class]="'bi ' + getTypeIcon(location().type)"></i>
+    </div>
+    <div class="location-type">{{ location().type }}</div>
+  </div>
+
+  <div class="card-body">
+    <h3 class="card-title">{{ location().name }}</h3>
+
+    <div class="card-info">
+      <div class="info-item">
+        <i class="bi bi-layers"></i>
+        <span class="info-label">Dimensão:</span>
+        <span class="info-value">{{ location().dimension }}</span>
+      </div>
+
+      <div class="info-item">
+        <i class="bi bi-people"></i>
+        <span class="info-label">Residentes:</span>
+        <span class="info-value"
+          >{{ location().residents.length }} residents</span
+        >
+      </div>
+    </div>
+
+    <a [routerLink]="['/locations', location().id]" class="btn-details">
+      <span>Ver Detalhes</span>
+      <i class="bi bi-arrow-right-circle"></i>
+    </a>
+  </div>
+</div>

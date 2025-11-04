@@ -1,0 +1,23 @@
+<aside class="sidebar" [class.sidebar-expanded]="isExpanded()">
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li *ngFor="let item of navItems" class="nav-item">
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-link"
+          [attr.data-tooltip]="item.label"
+        >
+          <i [class]="'bi ' + item.icon"></i>
+          <span class="nav-text">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
+<div
+  *ngIf="isExpanded()"
+  class="sidebar-overlay"
+  (click)="closeSidebar()"
+></div>

@@ -1,0 +1,234 @@
+<div class="profile-container" *ngIf="currentUser()">
+  <button class="btn-back" (click)="goBack()">
+    <i class="bi bi-arrow-left"></i>
+    Voltar
+  </button>
+
+  <div class="profile-header">
+    <div class="profile-main-info">
+      <div class="avatar-wrapper">
+        <img
+          [src]="isEditing() ? getPreviewAvatar() : currentUser()!.avatar"
+          [alt]="currentUser()!.name"
+          class="profile-avatar"
+        />
+        <div class="avatar-badge" *ngIf="!isEditing()">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+      </div>
+
+      <div class="profile-title-section">
+        <h1 class="profile-name">{{ currentUser()!.name }}</h1>
+        <p class="profile-email">{{ currentUser()!.email }}</p>
+
+        <div class="profile-badges">
+          <span
+            class="badge role-badge"
+            [style.background-color]="getRoleInfo(currentUser()!.role)?.color"
+          >
+            <i [class]="'bi ' + getRoleInfo(currentUser()!.role)?.icon"></i>
+            {{ getRoleInfo(currentUser()!.role)?.label }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button
+        type="button"
+        class="btn-edit"
+        (click)="toggleEdit()"
+        [class.active]="isEditing()"
+      >
+        <i [class]="isEditing() ? 'bi bi-x-circle' : 'bi bi-pencil-fill'"></i>
+        {{ isEditing() ? "Cancelar" : "Editar Perfil" }}
+      </button>
+    </div>
+  </div>
+
+  <div class="profile-details" *ngIf="!isEditing()">
+    <div class="info-cards">
+      <div class="info-card">
+        <i class="bi bi-person-fill"></i>
+        <div class="info-content">
+          <span class="info-label">Nome</span>
+          <span class="info-value">{{ currentUser()!.name }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <i class="bi bi-envelope-fill"></i>
+        <div class="info-content">
+          <span class="info-label">Email</span>
+          <span class="info-value">{{ currentUser()!.email }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <i class="bi bi-award-fill"></i>
+        <div class="info-content">
+          <span class="info-label">Role</span>
+          <span class="info-value">{{ currentUser()!.role }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-edit" *ngIf="isEditing()">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="edit-form">
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="bi bi-person-gear"></i>
+          Informações Pessoais
+        </h3>
+
+        <div class="form-group">
+          <label for="name" class="form-label">
+            <i class="bi bi-person-fill"></i>
+            Nome Completo
+          </label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-input"
+            [class.invalid]="name?.invalid && name?.touched"
+            placeholder="Seu nome completo"
+          />
+          <span class="error-message" *ngIf="name?.invalid && name?.touched">
+            Nome deve ter pelo menos 3 caracteres
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">
+            <i class="bi bi-envelope-fill"></i>
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-input disabled"
+            readonly
+          />
+          <small class="form-hint">
+            <i class="bi bi-info-circle"></i>
+            O email não pode ser alterado
+          </small>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="bi bi-image-fill"></i>
+          Avatar
+        </h3>
+
+        <div class="avatar-preview">
+          <img
+            [src]="getPreviewAvatar()"
+            alt="Preview do avatar"
+            class="preview-img"
+          />
+          <div class="preview-info">
+            <p>Pré-visualização do avatar</p>
+            <small>Será gerado automaticamente se deixar em branco</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="avatar" class="form-label">
+            <i class="bi bi-link-45deg"></i>
+            URL do Avatar
+          </label>
+          <input
+            type="url"
+            id="avatar"
+            formControlName="avatar"
+            class="form-input"
+            [class.invalid]="avatar?.invalid && avatar?.touched"
+            placeholder="https://exemplo.com/avatar.jpg"
+          />
+          <span
+            class="error-message"
+            *ngIf="avatar?.invalid && avatar?.touched"
+          >
+            URL inválida. Deve começar com http:// ou https://
+          </span>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="bi bi-award-fill"></i>
+          Role
+        </h3>
+
+        <div class="form-group">
+          <label for="role" class="form-label">
+            <i class="bi bi-shield-check"></i>
+            Selecione sua Role
+          </label>
+          <select
+            id="role"
+            formControlName="role"
+            class="form-select"
+            [style.border-color]="getRoleInfo(role?.value)?.color"
+          >
+            <option
+              *ngFor="let roleOption of availableRoles"
+              [value]="roleOption.value"
+            >
+              {{ roleOption.label }} - {{ roleOption.description }}
+            </option>
+          </select>
+
+          <div
+            class="role-preview"
+            *ngIf="getRoleInfo(role?.value) as selectedRole"
+            [style.background-color]="selectedRole.color + '15'"
+          >
+            <i
+              [class]="'bi ' + selectedRole.icon"
+              [style.color]="selectedRole.color"
+            ></i>
+            <span>{{ selectedRole.description }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-success" *ngIf="successMessage()">
+        <i class="bi bi-check-circle-fill"></i>
+        {{ successMessage() }}
+      </div>
+
+      <div class="alert alert-danger" *ngIf="errorMessage()">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        {{ errorMessage() }}
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="toggleEdit()"
+          [disabled]="loading()"
+        >
+          <i class="bi bi-x-circle"></i>
+          Cancelar
+        </button>
+        <button type="submit" class="btn-save" [disabled]="loading()">
+          <span *ngIf="!loading()">
+            <i class="bi bi-check-circle-fill"></i>
+            Salvar Alterações
+          </span>
+          <span *ngIf="loading()" class="loading-spinner">
+            <i class="bi bi-arrow-repeat spin"></i>
+            Salvando...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

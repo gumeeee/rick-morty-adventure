@@ -1,0 +1,114 @@
+<header class="header">
+  <div class="header-container">
+    <div class="header-left">
+      <button
+        class="btn btn-link sidebar-toggle"
+        (click)="onToggleSidebar()"
+        aria-label="Sidebar Toggle"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+
+      <button
+        class="btn btn-link search-toggle-mobile"
+        (click)="toggleSearchModal()"
+        aria-label="Search"
+        *ngIf="isAuthenticated()"
+      >
+        <i class="bi bi-search"></i>
+      </button>
+
+      <div class="logo">
+        <img src="logo.png" alt="Rick and Morty Adventure" class="logo-img" />
+        <span class="logo-text">Rick & Morty Adventure</span>
+      </div>
+    </div>
+
+    <div class="header-search" *ngIf="isAuthenticated()">
+      <app-search-bar
+        [manualMode]="false"
+        (searchChange)="onSearch($event)"
+      ></app-search-bar>
+    </div>
+
+    <div class="header-right">
+      <div class="dropdown" [class.show]="dropdownOpen">
+        <button
+          class="btn btn-link dropdown-toggle user-dropdown"
+          type="button"
+          (click)="toggleDropdown()"
+          aria-expanded="dropdownOpen"
+        >
+          <i class="bi bi-person-circle" *ngIf="currentUser()?.avatar"> </i>
+          <span class="user-name">{{ currentUser()?.name }}</span>
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end" [class.show]="dropdownOpen">
+          <li class="dropdown-header">
+            <div class="user-info">
+              <img
+                [src]="currentUser()?.avatar"
+                [alt]="currentUser()?.name"
+                class="user-avatar-large"
+              />
+              <div class="user-details">
+                <strong>{{ currentUser()?.name }}</strong>
+                <small>{{ currentUser()?.email }}</small>
+                <span
+                  class="role-badge"
+                  [style.background-color]="userRole()?.color"
+                  *ngIf="userRole()"
+                >
+                  <i [class]="'bi ' + userRole()!.icon"></i>
+                  {{ userRole()!.label }}
+                </span>
+              </div>
+            </div>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" (click)="goToProfile()">
+              <i class="bi bi-person"></i> Meu Perfil
+            </a>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item text-danger" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i> Sign Out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div
+  class="search-overlay"
+  [class.active]="searchModalOpen"
+  *ngIf="isAuthenticated()"
+>
+  <div class="search-overlay-header">
+    <button class="btn-close-search" (click)="toggleSearchModal()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <h3>Buscar</h3>
+  </div>
+  <div class="search-overlay-content">
+    <app-search-bar
+      [manualMode]="true"
+      (searchChange)="onSearch($event)"
+    ></app-search-bar>
+
+    <p class="search-hint">
+      <i class="bi bi-lightbulb"></i>
+      Digite e clique em "Buscar" ou pressione Enter
+    </p>
+  </div>
+</div>
+
+<div
+  *ngIf="dropdownOpen"
+  class="dropdown-backdrop"
+  (click)="closeDropdown()"
+></div>

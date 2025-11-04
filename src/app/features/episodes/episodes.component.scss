@@ -1,0 +1,158 @@
+$portal-green: #97ce4c;
+$portal-blue: #11b0c8;
+$dark-space: #1a1a2e;
+
+.episodes-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  animation: slideDown 0.5s ease-out;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: $dark-space;
+  margin: 0 0 0.75rem 0;
+
+  i {
+    color: $portal-green;
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+
+    i {
+      font-size: 2rem;
+    }
+  }
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.scroll-sentinel {
+  grid-column: 1 / -1;
+  height: 1px;
+}
+
+.loading-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
+
+  p {
+    color: #6b7280;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.empty-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+
+  i {
+    font-size: 4rem;
+    color: $portal-green;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    color: $dark-space;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.btn-primary {
+  padding: 0.875rem 2rem;
+  background: linear-gradient(135deg, $portal-green 0%, #10b981 100%);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba($portal-green, 0.3);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba($portal-green, 0.4);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
