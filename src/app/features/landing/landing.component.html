@@ -1,0 +1,167 @@
+<div class="landing-page">
+  <section class="hero-section">
+    <div class="portal-background"></div>
+
+    @if (isLoggedIn()) {
+    <div class="floating-header">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i [class]="'bi ' + getRoleIcon()"></i>
+        </div>
+        <div class="user-details">
+          <span class="user-name">{{ userName() }}</span>
+          <span class="user-role" [style.color]="getRoleColor()">
+            {{ userRole() }}
+          </span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-sm btn-outline-light" (click)="goToProfile()">
+          <i class="bi bi-person-circle me-1"></i>
+          Profile
+        </button>
+        <button class="btn btn-sm btn-outline-danger" (click)="logout()">
+          <i class="bi bi-box-arrow-right me-1"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+    }
+
+    <div class="hero-content">
+      <img src="logo.png" alt="Rick and Morty Logo" class="hero-logo" />
+
+      <h1 class="hero-title">
+        Explore the
+        <span class="gradient-text">Multiverso</span>
+      </h1>
+      @if (isLoggedIn()) {
+      <p class="hero-subtitle">
+        Bem vindo de volta, <strong>{{ userName() }}</strong
+        >! Pronto para continuar suas aventuras interdimensionais?
+      </p>
+      } @else {
+      <p class="hero-subtitle">
+        Mergulhe no universo de Rick e Morty. Descubra personagens, locais e
+        episódios de dimensões infinitas.
+      </p>
+      }
+
+      <div class="hero-ctas">
+        <button
+          class="btn btn-primary btn-lg cta-primary"
+          (click)="getStarted()"
+        >
+          <i class="bi bi-rocket-takeoff-fill me-2"></i>
+          {{ isLoggedIn() ? "Vá para o Dashboard" : "Comece Sua Aventura" }}
+        </button>
+
+        <button
+          class="btn btn-outline-light btn-lg cta-secondary"
+          (click)="scrollToFeatures()"
+        >
+          <i class="bi bi-arrow-down-circle me-2"></i>
+          Leia Mais
+        </button>
+      </div>
+
+      <div class="hero-badges">
+        @if (isLoggedIn()) {
+        <span class="badge badge-success">
+          <i class="bi bi-check-circle-fill me-1"></i>
+          Conectado como {{ userName() }}
+        </span>
+        <span class="badge" [style.background-color]="getRoleColor()">
+          <i [class]="'bi ' + getRoleIcon() + ' me-1'"></i>
+          {{ userRole() }}
+        </span>
+        } @else {
+        <span class="badge">
+          <i class="bi bi-check-circle-fill me-1"></i>
+          Grátis para Usar
+        </span>
+        <span class="badge">
+          <i class="bi bi-lightning-fill me-1"></i>
+          Dados em Tempo Real
+        </span>
+        <span class="badge">
+          <i class="bi bi-shield-fill-check me-1"></i>
+          Cadastro Seguro
+        </span>
+        }
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <i class="bi bi-chevron-down"></i>
+    </div>
+  </section>
+
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Descubra Recursos Incríveis</h2>
+        <p class="section-subtitle">
+          Tudo o que você precisa para explorar o universo de Rick e Morty
+        </p>
+      </div>
+
+      <div class="features-grid">
+        @for (feature of features; track feature.title) {
+        <div class="feature-card" [style.--feature-color]="feature.color">
+          <div class="feature-icon">
+            <i [class]="'bi ' + feature.icon"></i>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        @for (stat of stats; track stat.label) {
+        <div class="stat-card">
+          <div class="stat-value">{{ stat.current }}+</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final-section">
+    <div class="container">
+      <div class="cta-final-content">
+        <h2 class="cta-final-title">Preparado para pular no portal?</h2>
+        <p class="cta-final-subtitle">
+          Junte se a milhares de fãs explorando o multiverso de Rick and Morty
+        </p>
+        <button
+          class="btn btn-success btn-lg cta-final-button"
+          (click)="getStarted()"
+        >
+          <i class="bi bi-door-open-fill me-2"></i>
+          {{ isLoggedIn() ? "Entre no Dashboard" : "Comece Agora" }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="container">
+      <p class="footer-text">
+        Dados fornecidos por
+        <a href="https://rickandmortyapi.com" target="_blank" rel="noopener">
+          Rick and Morty API
+        </a>
+      </p>
+      <p class="footer-copyright">
+        Feito com <i class="bi bi-heart-fill text-danger"></i> usando Angular 18
+      </p>
+    </div>
+  </footer>
+</div>

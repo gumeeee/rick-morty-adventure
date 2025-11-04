@@ -1,8 +1,15 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard, loginGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./features/landing/landing.component').then(
+        (m) => m.LandingComponent
+      ),
+  },
   {
     path: '',
     component: MainLayoutComponent,
@@ -66,13 +73,21 @@ export const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [loginGuard],
     loadComponent: () =>
       import('./features/auth/login/login.component').then(
         (m) => m.LoginComponent
       ),
   },
   {
+    path: '404',
+    loadComponent: () =>
+      import('./features/not-found/not-found.component').then(
+        (m) => m.NotFoundComponent
+      ),
+  },
+  {
     path: '**',
-    redirectTo: 'characters',
+    redirectTo: '404',
   },
 ];

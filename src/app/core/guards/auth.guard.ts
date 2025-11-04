@@ -15,3 +15,15 @@ export const authGuard: CanActivateFn = (route, state) => {
   });
   return false;
 };
+
+export const loginGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isAuthenticatedSync()) {
+    router.navigate(['/characters']);
+    return false;
+  }
+
+  return true;
+};
