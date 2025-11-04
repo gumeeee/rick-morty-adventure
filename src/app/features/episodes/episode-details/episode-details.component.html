@@ -69,6 +69,73 @@
     </div>
   </div>
 
+  @if (episode() && !loading()) {
+  <div class="tmdb-rating-section">
+    @if (tmdbLoading()) {
+    <div class="tmdb-card tmdb-loading">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-text"></div>
+      <div class="skeleton skeleton-bar"></div>
+    </div>
+    } @else if (tmdbData()) {
+    <div class="tmdb-card" [style.--rating-color]="getRatingColor()">
+      <div class="tmdb-header">
+        <i class="bi bi-star-fill tmdb-icon"></i>
+        <h3 class="tmdb-title">TMDB Rating</h3>
+      </div>
+
+      <div class="tmdb-rating-display">
+        <div class="rating-score">
+          <span class="rating-number">{{
+            tmdbData()!.vote_average.toFixed(1)
+          }}</span>
+          <span class="rating-max">/10</span>
+        </div>
+        <div class="rating-label">{{ getRatingLabel() }}</div>
+      </div>
+
+      <div class="rating-bar-container">
+        <div class="rating-bar-bg">
+          <div
+            class="rating-bar-fill"
+            [style.width.%]="getRatingPercentage()"
+          ></div>
+        </div>
+        <span class="rating-percentage"
+          >{{ getRatingPercentage().toFixed(0) }}%</span
+        >
+      </div>
+
+      <div class="vote-count">
+        <i class="bi bi-people-fill me-2"></i>
+        {{ formatVoteCount(tmdbData()!.vote_count) }} votes
+      </div>
+
+      @if (tmdbData()!.overview) {
+      <div class="tmdb-overview">
+        <h4 class="overview-title">Overview</h4>
+        <p class="overview-text">{{ tmdbData()!.overview }}</p>
+      </div>
+      } @if (tmdbData()!.runtime) {
+      <div class="tmdb-runtime">
+        <i class="bi bi-clock-fill me-2"></i>
+        Runtime: {{ tmdbData()!.runtime }} min
+      </div>
+      }
+
+      <div class="tmdb-footer">
+        <span class="tmdb-source">Data from The Movie Database</span>
+      </div>
+    </div>
+    } @else if (tmdbError()) {
+    <div class="tmdb-card tmdb-error">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <p>Unable to load rating data</p>
+    </div>
+    }
+  </div>
+  }
+
   <div class="characters-section" *ngIf="totalCharacters > 0">
     <div class="characters-header">
       <h2>

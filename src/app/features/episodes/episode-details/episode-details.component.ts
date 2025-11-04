@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { InfiniteScrollDirective } from '../../../shared/directives/infinite-scroll.directive';
-import { Character, Episode } from '../../../core/models';
+import { Character, Episode, TMDBEpisodeDetails } from '../../../core/models';
+import { TmdbService } from '../../../core/services';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { RickMortyApiService } from '../../../core/services';
 
@@ -22,6 +23,10 @@ export class EpisodeDetailsComponent implements OnInit, OnDestroy {
   error = signal<string | null>(null);
   hasMoreCharacters = signal<boolean>(true);
 
+  tmdbData = signal<TMDBEpisodeDetails | null>(null);
+  tmdbLoading = signal<boolean>(false);
+  tmdbError = signal<boolean>(false);
+
   private allCharacterIds: number[] = [];
   private currentCharacterIndex = 0;
   private charactersPerPage = 6;
@@ -30,7 +35,8 @@ export class EpisodeDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: RickMortyApiService
+    private apiService: RickMortyApiService,
+    private tmdbService: TmdbService
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +67,8 @@ export class EpisodeDetailsComponent implements OnInit, OnDestroy {
           this.episode.set(episode);
           this.loading.set(false);
 
+          this.loadTMDBData(episode.episode);
+
           if (episode.characters.length > 0) {
             this.allCharacterIds = episode.characters.map((url) => {
               const parts = url.split('/');
@@ -78,6 +86,36 @@ export class EpisodeDetailsComponent implements OnInit, OnDestroy {
             'Falha ao carregar os detalhes do episódio. Rick perdeu o controle remoto! Tente novamente mais tarde.'
           );
           this.loading.set(false);
+        },
+      });
+  }
+
+  loadTMDBData(episodeCode: string): void {
+    const parsed = this.tmdbService.parseEpisodeCode(episodeCode);
+
+    if (!parsed) {
+      console.warn(
+        'Não foi possível parsear o código do episódio:',
+        episodeCode
+      );
+      return;
+    }
+
+    this.tmdbLoading.set(true);
+    this.tmdbError.set(false);
+
+    this.tmdbService
+      .getEpisodeDetails(parsed.season, parsed.episode)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.tmdbData.set(data);
+          this.tmdbLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Erro ao carregar dados do TMDB:', err);
+          this.tmdbError.set(true);
+          this.tmdbLoading.set(false);
         },
       });
   }
@@ -170,6 +208,28 @@ export class EpisodeDetailsComponent implements OnInit, OnDestroy {
       unknown: 'status-unknown',
     };
     return statusMap[status] || 'status-unknown';
+  }
+
+  getRatingColor(): string {
+    const rating = this.tmdbData()?.vote_average || 0;
+    return this.tmdbService.getRatingColor(rating);
+  }
+
+  getRatingLabel(): string {
+    const rating = this.tmdbData()?.vote_average || 0;
+    return this.tmdbService.getRatingLabel(rating);
+  }
+
+  getRatingPercentage(): number {
+    const rating = this.tmdbData()?.vote_average || 0;
+    return (rating / 10) * 100;
+  }
+
+  formatVoteCount(count: number): string {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1) + 'K';
+    }
+    return count.toString();
   }
 
   get totalCharacters(): number {
