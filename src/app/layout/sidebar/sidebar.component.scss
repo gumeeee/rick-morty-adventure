@@ -32,12 +32,15 @@ $border-glow: rgba(151, 206, 76, 0.3);
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.3);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
+    .nav-item {
+      opacity: 1;
+    }
+
     &.sidebar-expanded {
       transform: translatex(0);
 
       .nav-item {
-        animation: slideInLeft 0.4s ease-out forwards;
-        opacity: 0;
+        animation: slideInLeftMobile 0.3s ease-out forwards;
 
         @for $i from 1 through 10 {
           &:nth-child(#{$i}) {
@@ -273,5 +276,14 @@ $border-glow: rgba(151, 206, 76, 0.3);
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideInLeftMobile {
+  from {
+    transform: translateX(-20px);
+  }
+  to {
+    transform: translateX(0);
   }
 }
