@@ -1,23 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Episode } from '../../core/models';
+import { RickMortyApiService } from '../../core/services';
 import { EpisodeCardComponent } from '../../shared/components/episode-card/episode-card.component';
 import {
   EpisodeFiltersComponent,
   EpisodeFilterValues,
 } from '../../shared/components/episode-filters/episode-filters.component';
 import { LoadingSkeletonComponent } from '../../shared/components/loading-skeleton/loading-skeleton.component';
-import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
 import { InfiniteScrollDirective } from '../../shared/directives/infinite-scroll.directive';
-import { Subject, takeUntil } from 'rxjs';
-import { RickMortyApiService } from '../../core/services';
 
 @Component({
   selector: 'app-episodes',
   standalone: true,
   imports: [
     CommonModule,
-    SearchBarComponent,
     EpisodeCardComponent,
     EpisodeFiltersComponent,
     LoadingSkeletonComponent,
@@ -43,6 +41,15 @@ export class EpisodesComponent implements OnInit, OnDestroy {
   constructor(private apiService: RickMortyApiService) {}
 
   ngOnInit(): void {
+    this.searchTerm = this.apiService.getSearchTerm();
+
+    this.apiService.searchTerm$
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((term) => {
+        this.searchTerm = term;
+        this.loadEpisodes(true);
+      });
+
     this.loadEpisodes();
   }
 
@@ -90,11 +97,6 @@ export class EpisodesComponent implements OnInit, OnDestroy {
           this.hasMore.set(false);
         },
       });
-  }
-
-  onSearch(term: string): void {
-    this.searchTerm = term;
-    this.loadEpisodes(true);
   }
 
   onFiltersChange(filters: EpisodeFilterValues): void {
