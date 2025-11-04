@@ -1,1 +1,258 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="portal-background">
+    <div class="portal-ring"></div>
+    <div class="portal-ring"></div>
+    <div class="portal-ring"></div>
+  </div>
+
+  <div class="login-card">
+    <div class="card-header">
+      <img src="logo.png" alt="Rick and Morty" class="logo" />
+      <h1 class="title">{{ isLoginMode() ? "Login" : "Criar Conta" }}</h1>
+      <p class="subtitle">
+        {{
+          isLoginMode()
+            ? "Entre no multiverso de Rick e Morty"
+            : "Junte-se à aventura interdimensional"
+        }}
+      </p>
+    </div>
+
+    <form
+      *ngIf="isLoginMode()"
+      [formGroup]="loginForm"
+      (ngSubmit)="onLogin()"
+      class="form"
+    >
+      <div class="form-group">
+        <label for="login-email" class="form-label">
+          <i class="bi bi-envelope-fill"></i>
+          Email
+        </label>
+        <input
+          type="email"
+          id="login-email"
+          formControlName="email"
+          class="form-input"
+          [class.invalid]="loginEmail?.invalid && loginEmail?.touched"
+          placeholder="seu@email.com"
+        />
+        <span
+          class="error-message"
+          *ngIf="loginEmail?.invalid && loginEmail?.touched"
+        >
+          Email inválido
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="login-password" class="form-label">
+          <i class="bi bi-lock-fill"></i>
+          Senha
+        </label>
+        <input
+          type="password"
+          id="login-password"
+          formControlName="password"
+          class="form-input"
+          [class.invalid]="loginPassword?.invalid && loginPassword?.touched"
+          placeholder="••••••••"
+        />
+        <span
+          class="error-message"
+          *ngIf="loginPassword?.invalid && loginPassword?.touched"
+        >
+          Senha deve ter pelo menos 6 caracteres
+        </span>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="errorMessage()">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        {{ errorMessage() }}
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="loading()">
+        <span *ngIf="!loading()">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Entrar
+        </span>
+        <span *ngIf="loading()" class="loading-spinner">
+          <i class="bi bi-arrow-repeat spin"></i>
+          Entrando...
+        </span>
+      </button>
+
+      <div class="form-footer">
+        <p>
+          Não tem uma conta?
+          <button type="button" class="btn-link" (click)="toggleMode()">
+            Criar conta
+          </button>
+        </p>
+      </div>
+    </form>
+
+    <!-- FORMULÁRIO DE REGISTRO -->
+    <form
+      *ngIf="!isLoginMode()"
+      [formGroup]="registerForm"
+      (ngSubmit)="onRegister()"
+      class="form"
+    >
+      <div class="form-group">
+        <label for="register-name" class="form-label">
+          <i class="bi bi-person-fill"></i>
+          Nome Completo
+        </label>
+        <input
+          type="text"
+          id="register-name"
+          formControlName="name"
+          class="form-input"
+          [class.invalid]="registerName?.invalid && registerName?.touched"
+          placeholder="Rick Sanchez"
+        />
+        <span
+          class="error-message"
+          *ngIf="registerName?.invalid && registerName?.touched"
+        >
+          Nome deve ter pelo menos 3 caracteres
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="register-email" class="form-label">
+          <i class="bi bi-envelope-fill"></i>
+          Email
+        </label>
+        <input
+          type="email"
+          id="register-email"
+          formControlName="email"
+          class="form-input"
+          [class.invalid]="registerEmail?.invalid && registerEmail?.touched"
+          placeholder="seu@email.com"
+        />
+        <span
+          class="error-message"
+          *ngIf="registerEmail?.invalid && registerEmail?.touched"
+        >
+          Email inválido
+        </span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="register-password" class="form-label">
+            <i class="bi bi-lock-fill"></i>
+            Senha
+          </label>
+          <input
+            type="password"
+            id="register-password"
+            formControlName="password"
+            class="form-input"
+            [class.invalid]="
+              registerPassword?.invalid && registerPassword?.touched
+            "
+            placeholder="••••••••"
+          />
+          <span
+            class="error-message"
+            *ngIf="registerPassword?.invalid && registerPassword?.touched"
+          >
+            Mínimo 6 caracteres
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="register-confirm-password" class="form-label">
+            <i class="bi bi-lock-fill"></i>
+            Confirmar Senha
+          </label>
+          <input
+            type="password"
+            id="register-confirm-password"
+            formControlName="confirmPassword"
+            class="form-input"
+            [class.invalid]="
+              registerConfirmPassword?.invalid &&
+              registerConfirmPassword?.touched
+            "
+            placeholder="••••••••"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="register-role" class="form-label">
+          <i class="bi bi-award-fill"></i>
+          Role (Função)
+        </label>
+        <select
+          id="register-role"
+          formControlName="role"
+          class="form-select"
+          [style.border-color]="getRoleColor(registerRole?.value)"
+        >
+          <option *ngFor="let role of availableRoles" [value]="role.value">
+            {{ role.label }} - {{ role.description }}
+          </option>
+        </select>
+        <div
+          class="role-info"
+          *ngIf="getSelectedRole() as selectedRole"
+          [style.background-color]="selectedRole.color + '15'"
+        >
+          <i
+            [class]="'bi ' + selectedRole.icon"
+            [style.color]="selectedRole.color"
+          ></i>
+          <span>{{ selectedRole.description }}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="register-avatar" class="form-label">
+          <i class="bi bi-image-fill"></i>
+          Avatar (Opcional)
+        </label>
+        <input
+          type="url"
+          id="register-avatar"
+          formControlName="avatar"
+          class="form-input"
+          placeholder="https://exemplo.com/avatar.jpg"
+        />
+        <small class="form-hint">
+          Deixe em branco para gerar um avatar automático com suas iniciais
+        </small>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="errorMessage()">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        {{ errorMessage() }}
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="loading()">
+        <span *ngIf="!loading()">
+          <i class="bi bi-person-plus-fill"></i>
+          Criar Conta
+        </span>
+        <span *ngIf="loading()" class="loading-spinner">
+          <i class="bi bi-arrow-repeat spin"></i>
+          Criando conta...
+        </span>
+      </button>
+
+      <div class="form-footer">
+        <p>
+          Já tem uma conta?
+          <button type="button" class="btn-link" (click)="toggleMode()">
+            Fazer login
+          </button>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

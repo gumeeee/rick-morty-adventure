@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, output } from '@angular/core';
+import { Component, computed, output, WritableSignal } from '@angular/core';
 import { Router } from '@angular/router';
+import {
+  AuthService,
+  AVAILABLE_ROLES,
+  User,
+} from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -14,9 +19,19 @@ export class HeaderComponent {
 
   dropdownOpen = false;
 
-  userName = 'Rick Sanchez';
+  currentUser!: WritableSignal<User | null>;
+  isAuthenticated!: WritableSignal<boolean>;
 
-  constructor(private router: Router) {}
+  userRole = computed(() => {
+    const user = this.currentUser();
+    if (!user) return null;
+    return AVAILABLE_ROLES.find((r) => r.value === user.role);
+  });
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.currentUser = this.authService.currentUser;
+    this.isAuthenticated = this.authService.isAuthenticated;
+  }
 
   onToggleSidebar(): void {
     this.toggleSidebar.emit();
@@ -33,8 +48,7 @@ export class HeaderComponent {
 
   logout(): void {
     this.dropdownOpen = false;
-    console.log('Navigating to login... Logout clicked');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
   closeDropdown(): void {
