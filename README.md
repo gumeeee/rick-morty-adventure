@@ -65,7 +65,7 @@
   # Edite .env e adicione sua key
 
   # Rode
-  docker-compose -f docker-compose.dev.yml up
+  docker-compose -f docker-compose.yml up
 
   # Acesse http://localhost:4200
 
